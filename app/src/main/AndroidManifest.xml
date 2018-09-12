@@ -45,6 +45,12 @@
             android:enabled="true"
             android:exported="true" />
 
+        <provider
+            android:name=".DownloadProvider"
+            android:authorities="ca.jordonsmith.cis4500demo.files"
+            android:enabled="true"
+            android:exported="true" />
+
     </application>
 
 </manifest>

@@ -1,9 +1,15 @@
 package ca.jordonsmith.cis4500demo;
 
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class DownloadActivity extends AppCompatActivity {
 
@@ -43,6 +49,35 @@ public class DownloadActivity extends AppCompatActivity {
     * Starts the download service
     * */
     public void onDownloadClicked(View view) {
+
         DownloadService.startActionDownload(this);
+    }
+
+
+    /*
+    *  Ran when the user clicks on the "show downloaded content" button on screen
+    *  This method serves as a means to demonstrate that the file was read from
+    *  using the Content Provider that we've set up.
+    * */
+    public void onShowClicked(View view) {
+        InputStream inputStream = null;
+        try {
+            inputStream = getContentResolver().openInputStream(Uri.parse(DownloadProvider.CONTENT_URI + "readme.md"));
+
+            StringBuffer stringBuffer = new StringBuffer();
+            BufferedReader bufferedReader = new BufferedReader(
+                    new InputStreamReader(inputStream)
+            );
+            String contentProviderFile = bufferedReader.readLine();
+
+            while (contentProviderFile != null) {
+                stringBuffer.append(contentProviderFile).append("\n");
+                contentProviderFile = bufferedReader.readLine();
+            }
+
+            Toast.makeText(this, "Text via content provider:\n\t" + stringBuffer.toString(), Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
