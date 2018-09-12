@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".UploadActivity" />
+        <activity android:name=".DownloadActivity" />
 
         <service
             android:name=".UploadService"
