@@ -15,7 +15,6 @@ import java.net.URL;
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
- * <p>
  */
 public class DownloadService extends IntentService {
 
@@ -57,9 +56,20 @@ public class DownloadService extends IntentService {
         try {
             String result = download();
             writeResultToFile(result);
+            broadcast(result);
         } catch (IOException e) {
-            e.printStackTrace();
+            broadcast(e.getMessage());
         }
+    }
+
+    private void broadcast(String message) {
+
+        Intent broadCastIntent = new Intent();
+        broadCastIntent.setAction(DownloadActivity.ACTION_DOWNLOAD_COMPLETE);
+
+        broadCastIntent.putExtra("message", message);
+
+        sendBroadcast(broadCastIntent);
     }
 
     public static String download() throws IOException {
@@ -105,7 +115,7 @@ public class DownloadService extends IntentService {
             outputStreamWriter.close();
         }
         catch (IOException e) {
-            e.printStackTrace();
+            broadcast(e.getMessage());
         }
     }
 }

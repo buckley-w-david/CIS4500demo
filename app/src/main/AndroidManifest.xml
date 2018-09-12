@@ -39,6 +39,12 @@
             android:name=".UploadReceiver"
             android:enabled="true"
             android:exported="true" />
+
+        <receiver
+            android:name=".DownloadReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
     </application>
 
 </manifest>
